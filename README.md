@@ -1,5 +1,7 @@
 # ciudata
 
+dentro de la carpeta don de se colna el proyecto 
+
 1 docker compose up -d --build
 
 2 docker exec -it php-ciudata bash
