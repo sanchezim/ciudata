@@ -27,6 +27,7 @@ class isUserBlockedMiddleware
     {
         $this->user = $user;
     }
+    
 
     /**
      * Handle an incoming request.

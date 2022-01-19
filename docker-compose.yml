@@ -33,7 +33,8 @@ services:
     expose:
       - '3306'
     volumes:
-      - ./config/mysql/schemas:/var/lib/mysql
+      # - ./config/mysql/schemas:/var/lib/mysql
+      - volume-app:/var/lib/mysql
     networks:
       - app-network    
   

@@ -18,7 +18,6 @@ class LoginService
     protected bool $checkHash = true;
     protected string $token;
 
-    protected Request $request;
     protected UserService $userService;
     protected User $user;
 
@@ -70,6 +69,8 @@ class LoginService
     public function loginResponse()
     {
         $this->userService->setLastLogin($this->user);
+        $this->userService->resetAttempts($this->user);
+        
         return $this->serviceResponse([
             'code'        => $this->code,
             'message'     => $this->message,

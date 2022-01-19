@@ -28,4 +28,11 @@ class LoginRequest extends FormRequest
             'password'  => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.exists'   => __('Username does not exist'),
+        ];
+    }
 }

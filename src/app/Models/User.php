@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -52,5 +53,11 @@ class User extends Authenticatable
     public function isBlocked(): bool
     {
         return $this->blocked === true;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = config('apiConfig.SPA_URL') . '/reset/password?token=' . $token;
+        $this->notify(new ResetPasswordNotification($url));
     }
 }

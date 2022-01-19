@@ -46,7 +46,7 @@ COPY config/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY src /var/www
 
 
-RUN chmod 777 /var/www/storage/
+RUN chmod 777 -R /var/www/storage/
 # RUN service supervisor start
 # RUN php artisan jwt:secret --force
 # RUN php artisan horizon

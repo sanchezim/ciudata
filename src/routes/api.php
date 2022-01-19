@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\v1\AuthController;
-use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\Api\v1\UserController;
+use App\Http\Controllers\Api\v1\NewPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,14 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('login', [AuthController::class, 'login'])->name('user.login');
+
+Route::post('forgot/password', [NewPasswordController::class, 'forgotPassword'])
+    ->middleware('guest')
+    ->name('password.email');
+Route::post('reset/password', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
+
+
+
 
 Route::get('user', [UserController::class, 'show'])
     ->middleware(['auth:sanctum'])
