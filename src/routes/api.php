@@ -21,13 +21,18 @@ use App\Http\Controllers\Api\v1\NewPasswordController;
 //     return $request->user();
 // });
 
-Route::post('login', [AuthController::class, 'login'])->name('user.login');
+Route::post('login', [AuthController::class, 'login'])
+    ->middleware(['isUserBlocked'])
+    ->name('user.login');
 
 Route::post('forgot/password', [NewPasswordController::class, 'forgotPassword'])
     ->middleware('guest')
     ->name('password.email');
+
 Route::post('reset/password', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
 
+
+Route::post('user/assign/role', [UserRoleController::class, 'assign'])->name('user.role.assign');
 
 
 

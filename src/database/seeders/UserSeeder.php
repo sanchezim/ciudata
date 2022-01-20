@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -16,6 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        
         $user = User::create([
             'first_name'        => 'Ignacio',
             'second_name'       => 'Manuel',
@@ -25,5 +27,8 @@ class UserSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
             'password'          => Hash::make('0989nacho'),
         ]);
+        
+        $user->assignRole('master');
+
     }
 }

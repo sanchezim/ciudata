@@ -718,7 +718,8 @@
     "Username does not exist": "El usuario no existe",
     "The given data was invalid": "Los datos proporcionados no son válidos",
     "The password is incorrect, on the :tried invalid attempt your user is blocked: attempt :userAttempt of :tried": "La contraseña es incorrecta, al :tried intento invalido se bloquea tu usuario: intento :userAttempt de :tried ",
-    "Disabled user": "Usuario inhabilitado"
+    "Disabled user": "Usuario inhabilitado",
+    "User does not have the right roles.": "El usuario no tiene los roles correctos."
 
 
 }

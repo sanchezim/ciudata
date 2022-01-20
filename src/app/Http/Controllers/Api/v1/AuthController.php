@@ -17,7 +17,6 @@ class AuthController extends Controller
 
     public function __construct(LoginService $loginService)
     {
-        $this->middleware(['isUserBlocked']);
         $this->loginService = $loginService;
     }
 
