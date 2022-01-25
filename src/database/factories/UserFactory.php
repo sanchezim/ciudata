@@ -14,12 +14,13 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        
-            // ''   => 'Sánchez',
-            // 'second_last_name'  => 'Neri',
-            // 'email'             => 'manuh0989@gmail.com',
-            // 'email_verified_at' => Carbon::now(),
+        $rand = rand(1, 3);
+        // ''   => 'Sánchez',
+        // 'second_last_name'  => 'Neri',
+        // 'email'             => 'manuh0989@gmail.com',
+        // 'email_verified_at' => Carbon::now(),
         return [
+            'id_profile' => $rand,
             'first_name' => $this->faker->name(),
             'second_name' => $this->faker->name(),
             'first_last_name' => $this->faker->lastName(),

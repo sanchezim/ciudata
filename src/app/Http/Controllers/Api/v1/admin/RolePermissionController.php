@@ -5,29 +5,29 @@ namespace App\Http\Controllers\Api\v1\admin;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RoleCollection;
 use App\Http\Resources\RoleResource;
+use App\Http\Resources\RoleCollection;
+use Spatie\Permission\Models\Permission;
 
 class RolePermissionController extends Controller
 {
 
-    public function index()
+    public function indexRole()
     {
         return new RoleCollection(Role::paginate());
     }
 
-    public function create(Request $request)
+    public function createRole(Request $request)
     {
         $request->validate([
             'name' => 'required'
         ]);
 
-        $role = Role::create(['guard_name' => 'web', 'name' => $request->name]);
-
+        $role        = Role::create(['guard_name' => 'web', 'name' => $request->name]);
         return new RoleResource($role);
     }
 
-    public function update(Request $request, Role $role)
+    public function updateRole(Request $request, Role $role)
     {
         $request->validate([
             'name' => 'required'
@@ -38,10 +38,21 @@ class RolePermissionController extends Controller
         return new RoleResource($role);
     }
 
-    public function delete(Role $role)
+    public function deleteRole(Role $role)
     {
         $model = $role;
         $role->delete();
         return new RoleResource($model);
+    }
+
+    public function createPermission(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $permission = Permission::create(['guard_name' => 'web', 'name' => $request->name]);
+        
+        return new RoleResource($permission);
     }
 }

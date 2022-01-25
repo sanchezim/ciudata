@@ -18,17 +18,27 @@ class UserSeeder extends Seeder
     public function run()
     {
         
-        $user = User::create([
+        User::create([
+            'id_profile'        => 1,
             'first_name'        => 'Ignacio',
             'second_name'       => 'Manuel',
             'first_last_name'   => 'Sánchez',
             'second_last_name'  => 'Neri',
             'email'             => 'manuh0989@gmail.com',
-            'email_verified_at' => Carbon::now(),
-            'password'          => Hash::make('0989nacho'),
-        ]);
-        
-        $user->assignRole('master');
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+        ])->assignRole('super.user.master');
+
+        User::create([
+            'id_profile'        => 1,
+            'first_name'        => 'Laura',
+            'second_name'       => null,
+            'first_last_name'   => 'Hernandez',
+            'second_last_name'  => 'Hernandez',
+            'email'             => 'lhernandez@gmail.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+        ])->assignRole('super.user.senior');
 
     }
 }

@@ -15,8 +15,9 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('id_profile');
             $table->string('first_name');
-            $table->string('second_name');
+            $table->string('second_name')->nullable();
             $table->string('first_last_name');
             $table->string('second_last_name');
             $table->string('email')->unique();
@@ -27,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->boolean('blocked')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

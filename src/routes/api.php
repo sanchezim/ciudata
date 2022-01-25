@@ -32,7 +32,9 @@ Route::post('forgot/password', [NewPasswordController::class, 'forgotPassword'])
 Route::post('reset/password', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
 
 
-Route::post('user/assign/role', [UserRoleController::class, 'assign'])->name('user.role.assign');
+Route::post('user/bulk/assign/role', [UserController::class, 'bulkAssignUserRole'])
+    ->middleware(['auth:sanctum', 'role:super.user.master'])
+    ->name('user.role.permission.create');
 
 
 

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Traits\ServiceTrait;
 use Illuminate\Support\Facades\Hash;
