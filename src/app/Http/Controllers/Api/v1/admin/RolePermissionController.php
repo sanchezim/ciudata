@@ -14,7 +14,7 @@ class RolePermissionController extends Controller
 
     public function indexRole()
     {
-        return new RoleCollection(Role::paginate());
+        return new RoleCollection(Role::all());
     }
 
     public function createRole(Request $request)

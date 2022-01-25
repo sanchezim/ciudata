@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RoleCollection extends ResourceCollection
+class PermissionCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -19,9 +19,6 @@ class RoleCollection extends ResourceCollection
             'code'      => Response::HTTP_OK,
             'message'   => __('Request accepted'),
             'data'      => $this->collection,
-            // 'links' => [
-            //     'self' => 'link-value',
-            // ],
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Services\LoginService;
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 
 /**
@@ -20,7 +21,7 @@ class AuthController extends Controller
         $this->loginService = $loginService;
     }
 
-    public function login()
+    public function login(LoginRequest $request)
     {
         /**
          * @OA\Post(
@@ -54,5 +55,10 @@ class AuthController extends Controller
             ->checkHash()
             ->setToken()
             ->loginResponse();
+    }
+
+    public function tokenValidate()
+    {
+        return $this->loginService->tokenValidateResponse();
     }
 }

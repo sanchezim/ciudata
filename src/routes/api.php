@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\AuthController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\UserController;
-use App\Http\Controllers\Api\v1\NewPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,23 +19,10 @@ use App\Http\Controllers\Api\v1\NewPasswordController;
 //     return $request->user();
 // });
 
-Route::post('login', [AuthController::class, 'login'])
-    ->middleware(['isUserBlocked'])
-    ->name('user.login');
-
-Route::post('forgot/password', [NewPasswordController::class, 'forgotPassword'])
-    ->middleware('guest')
-    ->name('password.email');
-
-Route::post('reset/password', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
-
-
-Route::post('user/bulk/assign/role', [UserController::class, 'bulkAssignUserRole'])
-    ->middleware(['auth:sanctum', 'role:super.user.master'])
-    ->name('user.role.permission.create');
-
-
-
 Route::get('user', [UserController::class, 'show'])
     ->middleware(['auth:sanctum'])
     ->name('user.show');
+
+Route::get('token/validate', [AuthController::class, 'tokenValidate'])
+    ->middleware(['auth:sanctum'])
+    ->name('token.validate');

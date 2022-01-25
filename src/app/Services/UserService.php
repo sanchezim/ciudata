@@ -92,16 +92,29 @@ class UserService implements ServiceInterface
     {
         foreach ($idUsers  as  $idUser) {
             $user = $this->getUserById($idUser);
-            // $user->assignRole($role);
             $user->syncRoles($roles);
         }
+    }
+
+    public function assingUserRole()
+    {
+        $this->getUserById($this->request->idUser)->syncRoles($this->request->role);
+        return $this;
     }
 
     public function bulkAssignResponse()
     {
         return $this->serviceResponse([
-            'code' => $this->code,
-            'message' => $this->message,
+            'code'      => $this->code,
+            'message'   => $this->message,
+        ]);
+    }
+
+    public function assignUserRoleResponse()
+    {
+        return $this->serviceResponse([
+            'code'      => $this->code,
+            'message'   => $this->message,
         ]);
     }
 }

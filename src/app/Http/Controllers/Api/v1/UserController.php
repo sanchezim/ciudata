@@ -21,13 +21,22 @@ class UserController extends Controller
         return $this->userService->showUserLogin();
     }
 
-    public function bulkAssignUserRole(Request $request)
+    public function bulkAssignUserRole()
     {
         return $this->userService->validate([
-            'idUsers' => 'required|exists:users,id',
-            'roles' => 'required|exists:roles,name'
+            'idUsers'   => 'required|exists:users,id',
+            'roles'     => 'required|exists:roles,name'
         ])
             ->dispatchAssignUserRole()
             ->bulkAssignResponse();
+    }
+
+    public function assignUserRole ()
+    {
+        return $this->userService->validate([
+            'idUser' => 'required|exists:users,id',
+            'role'   => 'required|exists:roles,name'
+        ])->assingUserRole()
+        ->assignUserRoleResponse();
     }
 }

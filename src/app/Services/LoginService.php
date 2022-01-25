@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Traits\ServiceTrait;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Validation\ValidationException;
@@ -20,7 +21,7 @@ class LoginService
     protected UserService $userService;
     protected User $user;
 
-    public function __construct(LoginRequest $request, UserService $userService)
+    public function __construct(Request $request, UserService $userService)
     {
         $this->request      = $request;
         $this->userService  = $userService;
@@ -69,11 +70,20 @@ class LoginService
     {
         $this->userService->setLastLogin($this->user);
         $this->userService->resetAttempts($this->user);
-        
+
         return $this->serviceResponse([
             'code'        => $this->code,
             'message'     => $this->message,
             'accessToken' => $this->token,
+        ]);
+    }
+
+    public function tokenValidateResponse()
+    {
+        return $this->serviceResponse([
+            'code'          => $this->code,
+            'message'       => $this->message,
+            'tokenValidate' => true,
         ]);
     }
 }
