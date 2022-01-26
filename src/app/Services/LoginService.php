@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Traits\ServiceTrait;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Validation\ValidationException;
@@ -61,6 +62,20 @@ class LoginService
         return $this;
     }
 
+    public function login()
+    {
+        if (!Auth::attempt(['email' => $this->request->email, 'password' => $this->request->password])) {
+            throw ValidationException::withMessages([
+                'email' => __('The password is incorrect, on the :tried invalid attempt your user is blocked: attempt :userAttempt of :tried', [
+                    'tried'         => config('apiConfig.USER_LOGIN_ATTEMPTS'),
+                    'userAttempt'   => $this->user->number_attempt_login
+                ]),
+            ]);
+        }
+
+        return $this;
+    }
+
     public function getToken()
     {
         return $this->token;
@@ -84,6 +99,24 @@ class LoginService
             'code'          => $this->code,
             'message'       => $this->message,
             'tokenValidate' => true,
+        ]);
+    }
+
+    public function logout(): self
+    {
+        $auth = $this->userService->auth();
+        if ($auth->check()) {
+            // optional($auth)->logout();
+            optional($auth->user())->currentAccessToken()->delete();
+        }
+        return $this;
+    }
+
+    public function logoutResponse()
+    {
+        return $this->serviceResponse([
+            'code'      => $this->code,
+            'message'   => $this->message
         ]);
     }
 }

@@ -39,18 +39,17 @@ class RoleSeeder extends Seeder
         /**
          * assign user roles 
         */
-        $rolePermission->createPermission('user.role.permission.index');
-        // ->syncRoles([$master, $senior]);
+        $rolePermission->createPermission('user.role.permission.index')->syncRoles([$master, $senior]);
         $rolePermission->createPermission('user.role.permission.create')->syncRoles([$master, $senior]);
         $rolePermission->createPermission('user.role.permission.update')->syncRoles([$master, $senior]);
         $rolePermission->createPermission('user.role.permission.delete')->syncRoles([$master]);
 
         /**
-         * user manager
+         * user administrator
          */
-        $rolePermission->createPermission('user.index')->syncRoles([$master, $senior]);
-        $rolePermission->createPermission('user.create')->syncRoles([$master, $senior]);
-        $rolePermission->createPermission('user.update')->syncRoles([$master, $senior]);
-        $rolePermission->createPermission('user.delete')->syncRoles([$master]);
+        $rolePermission->createPermission('user.administrator.index')->syncRoles([$master, $senior]);
+        $rolePermission->createPermission('user.administrator.create')->syncRoles([$master, $senior]);
+        $rolePermission->createPermission('user.administrator.update')->syncRoles([$master, $senior]);
+        $rolePermission->createPermission('user.administrator.delete')->syncRoles([$master]);
     }
 }

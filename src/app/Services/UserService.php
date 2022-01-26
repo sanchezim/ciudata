@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Traits\ApiResponseTrait;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,6 +9,9 @@ use App\Jobs\BulkAssignUserRole;
 use App\Http\Traits\ServiceTrait;
 use App\Services\PasswordService;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\ApiResponseTrait;
+use App\Jobs\BulkAssignUserPermission;
 use App\Services\Interface\ServiceInterface;
 
 class UserService implements ServiceInterface
@@ -67,7 +69,12 @@ class UserService implements ServiceInterface
 
     public function showUserLogin()
     {
-        return auth()->user();
+        return $this->auth()->user();
+    }
+
+    public function auth()
+    {
+        return Auth::guard('sanctum');
     }
 
     public function setLastLogin(User $user): void
@@ -116,5 +123,44 @@ class UserService implements ServiceInterface
             'code'      => $this->code,
             'message'   => $this->message,
         ]);
+    }
+
+    public function assignUserPermission(): self
+    {
+        $this->getUserById($this->request->idUser)->givePermissionTo($this->request->permission);
+        return $this;
+    }
+
+    public function assignUserPermissionResponse()
+    {
+        return $this->serviceResponse([
+            'code'      => $this->code,
+            'message'   => $this->message,
+        ]);
+    }
+
+    public function dispatchAssignUserPermission(): self
+    {
+        BulkAssignUserPermission::dispatch($this->request->idUsers, $this->request->permissions);
+        return $this;
+    }
+
+    public function bulkAssignUserPermission(array $idUsers, array $permissions)
+    {
+        foreach ($idUsers  as  $idUser) {
+            $this->getUserById($idUser)->givePermissionTo($permissions);
+        }
+    }
+
+    public function revokeUSerPermission()
+    {
+        $this->getUserById($this->request->idUser)->revokePermissionTo($this->request->permissions);
+        return $this;
+    }
+
+    public function revokeUserRole()
+    {
+        $this->getUserById($this->request->idUser)->removeRole($this->request->role);
+        return $this;
     }
 }

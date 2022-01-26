@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Http\Response;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -34,8 +37,24 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->renderable(function (AuthenticationException $e, $request) {
+            return response()->json([
+                'code'          => Response::HTTP_UNAUTHORIZED,
+                'message'       => __('Unauthenticated'),
+                'tokenValidate' => false,
+            ], Response::HTTP_UNAUTHORIZED);
+        });
+
+        $this->renderable(function (ValidationException $e, $request) {
+            // $request->headers->set('Content-Type', 'application/json; charset=UTF-8');
+            return response()->json([
+                'code'      => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message'   => __('The given data was invalid'),
+                'errors'    => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        });
+
         $this->reportable(function (Throwable $e) {
-            //
         });
     }
 }

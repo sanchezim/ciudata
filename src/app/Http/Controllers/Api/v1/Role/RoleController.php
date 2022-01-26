@@ -3,14 +3,22 @@
 namespace App\Http\Controllers\Api\v1\Role;
 
 use Illuminate\Http\Request;
+use App\Services\RoleService;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RoleCollection;
 use App\Http\Resources\RoleResource;
-use Spatie\Permission\Models\Permission;
+use App\Http\Resources\RoleCollection;
 
 class RoleController extends Controller
 {
+
+    protected RoleService $roleService;
+
+    public function __construct(RoleService $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+
     public function index()
     {
         return new RoleCollection(Role::all());
@@ -21,12 +29,25 @@ class RoleController extends Controller
         return new RoleResource($role);
     }
 
-    public function assignPermissions(Request $request, Role $role)
+    public function assignPermissions(Role $role)
     {
-        $request->validate([
+        return $this->roleService
+        ->validate([
             'permissions' => 'required|exists:permissions,name'
-        ]);
-        $permissions = Permission::where($request->permissions);
-        $role->syncPermissions($permissions);
+        ])
+        ->setRole($role)
+        ->givePermission()
+        ->assignPermissionsResponse();
+    }
+
+    public function revokePermissions(Role $role)
+    {
+        return $this->roleService
+        ->validate([
+            'permissions' => 'required|exists:permissions,name'
+        ])
+        ->setRole($role)
+        ->revokePermissions()
+        ->revokePermissionsResponse();
     }
 }

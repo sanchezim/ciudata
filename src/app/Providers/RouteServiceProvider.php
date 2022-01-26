@@ -38,50 +38,20 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            /**
-             * Base route api
-             */
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
-            /**
-             * login route
-             */
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/login/route.php'));
-
-            /**
-             * user role route
-             */
-            Route::prefix('api')
-                ->middleware(['api', 'auth:sanctum'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/user/role/route.php'));
-
-            /**
-             * role route
-             */
-            Route::prefix('api/role')
-                ->middleware(['api', 'auth:sanctum'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/role/route.php'));
-
-            /**
-             * permission route
-             */
-            Route::prefix('api/permission')
-                ->middleware(['api', 'auth:sanctum'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/permission/route.php'));
-
-
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            $this->mapLoginRoute();
+            $this->mapRoleRoute();
+            $this->mapPermissionRoute();
+            $this->mapUserRoleAndPermissionRoute();
+            $this->mapUserAdministratorRoute();
         });
     }
 
@@ -95,5 +65,50 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
+    }
+
+    protected function mapLoginRoute(): void
+    {
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/login/route.php'));
+    }
+
+    protected function mapRoleRoute(): void
+    {
+        Route::prefix('api/role')
+            ->middleware(['api', 'auth:sanctum'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/role/route.php'));
+    }
+
+    protected function mapPermissionRoute(): void
+    {
+        Route::prefix('api/permission')
+            ->middleware(['api', 'auth:sanctum'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/permission/route.php'));
+    }
+
+    protected function mapUserRoleAndPermissionRoute(): void
+    {
+        Route::prefix('api')
+            ->middleware(['api', 'auth:sanctum'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/user/role/route.php'));
+
+        Route::prefix('api')
+            ->middleware(['api', 'auth:sanctum'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/user/permission/route.php'));
+    }
+
+    protected  function mapUserAdministratorRoute(): void
+    {
+        Route::prefix('api/users/administrator')
+            ->middleware(['api', 'auth:sanctum'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/user/administrator/route.php'));
     }
 }

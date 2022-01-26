@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use Illuminate\Http\Request;
 use App\Services\LoginService;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @OA\Info(title="API Ciudata", version="1.0")
@@ -53,8 +55,16 @@ class AuthController extends Controller
         return $this->loginService
             ->setUser()
             ->checkHash()
+            ->login()
             ->setToken()
             ->loginResponse();
+    }
+
+    public function logout(Request $request)
+    {
+        return $this->loginService
+            ->logout()
+            ->logoutResponse();
     }
 
     public function tokenValidate()

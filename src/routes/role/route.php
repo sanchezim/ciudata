@@ -25,6 +25,8 @@ use App\Http\Controllers\Api\v1\Role\RoleController;
 //     Route::post('/orders', 'store');
 // });
 
+
+
 Route::get('/', [RoleController::class, 'index'])
     ->name('role.index');
 
@@ -33,6 +35,11 @@ Route::get('/{role}', [RoleController::class, 'show'])
 
 Route::patch('/{role}', [RoleController::class, 'assignPermissions'])
     ->name('role.assign.permissions');
+
+Route::delete('/{role}', [RoleController::class, 'revokePermissions'])
+    ->name('role.revoke.permissions');
+
+
 
 
 // Route::post('/role/create', [RolePermissionController::class, 'createRole'])

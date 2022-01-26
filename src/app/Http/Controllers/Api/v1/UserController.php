@@ -31,12 +31,52 @@ class UserController extends Controller
             ->bulkAssignResponse();
     }
 
-    public function assignUserRole ()
+    public function assignUserRole()
     {
         return $this->userService->validate([
             'idUser' => 'required|exists:users,id',
             'role'   => 'required|exists:roles,name'
         ])->assingUserRole()
-        ->assignUserRoleResponse();
+            ->assignUserRoleResponse();
+    }
+
+    public function assignUserPermission()
+    {
+        return $this->userService->validate([
+            'idUser'        => 'required|exists:users,id',
+            'permission'    => 'required|exists:permissions,name'
+        ])
+            ->assignUserPermission()
+            ->assignUserPermissionResponse();
+    }
+
+    public function bulkAssignUserPermission()
+    {
+        return $this->userService->validate([
+            'idUsers'     => 'required|exists:users,id',
+            'permissions' => 'required|exists:permissions,name'
+        ])
+            ->dispatchAssignUserPermission()
+            ->bulkAssignResponse();
+    }
+
+    public function revokeUserPermission()
+    {
+        return $this->userService->validate([
+            'idUser'        => 'required|exists:users,id',
+            'permissions'   => 'required|exists:permissions,name'
+        ])
+        ->revokeUSerPermission()
+        ->bulkAssignResponse();
+    }
+
+    public function revokeUserRole()
+    {
+        return $this->userService->validate([
+            'idUser'   => 'required|exists:users,id',
+            'role'    => 'required|exists:roles,name'
+        ])
+        ->revokeUserRole()
+        ->assignUserPermissionResponse();
     }
 }
