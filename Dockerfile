@@ -43,10 +43,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Copiar el directorio existente a /var/www
 COPY config/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY config/shell/config.sh $HOME/bin/config.sh
 COPY src /var/www
 
 
-RUN chmod 777 -R /var/www/storage/
+
 # RUN service supervisor start
 # RUN php artisan jwt:secret --force
 # RUN php artisan horizon

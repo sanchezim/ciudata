@@ -49,7 +49,7 @@ class LoginService
             $this->userService->attemptUser($this->user);
 
             throw ValidationException::withMessages([
-                'email' => __('The password is incorrect, on the :tried invalid attempt your user is blocked: attempt :userAttempt of :tried', [
+                'password' => __('The password is incorrect, on the :tried invalid attempt your user is blocked: attempt :userAttempt of :tried', [
                     'tried'         => config('apiConfig.USER_LOGIN_ATTEMPTS'),
                     'userAttempt'   => $this->user->number_attempt_login
                 ]),
