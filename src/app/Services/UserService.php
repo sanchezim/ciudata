@@ -8,11 +8,13 @@ use Illuminate\Http\Request;
 use App\Jobs\BulkAssignUserRole;
 use App\Http\Traits\ServiceTrait;
 use App\Services\PasswordService;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\ApiResponseTrait;
 use App\Jobs\BulkAssignUserPermission;
+use App\Http\Resources\User\UserResource;
 use App\Services\Interface\ServiceInterface;
+use App\Notifications\User\Verify\EmailVerificationNotification;
 
 class UserService implements ServiceInterface
 {
@@ -20,6 +22,8 @@ class UserService implements ServiceInterface
 
     protected User $user;
     protected PasswordService $passwordService;
+
+    protected  string|int $passwordSend;
 
     public function __construct(User $user, PasswordService $passwordService, Request $request)
     {
@@ -162,5 +166,42 @@ class UserService implements ServiceInterface
     {
         $this->getUserById($this->request->idUser)->removeRole($this->request->role);
         return $this;
+    }
+
+    public function sendVerifyEmail(User $user = null): self
+    {
+        $user = $user ?? $this->user;
+        $user->notify(new EmailVerificationNotification($this->passwordSend));
+        return $this;
+    }
+
+    public function save()
+    {
+        $this->user = $this->user->saveUser($this->requestValidated);
+        return $this;
+    }
+
+    public function saveReponse()
+    {
+        return $this->serviceResponse([
+            'code'      => $this->code,
+            'message'   => $this->message,
+            'data'      => new UserResource($this->user),
+        ]);
+    }
+
+    public function setPasswordRandom()
+    {
+        $this->passwordSend  = helper_random_string();
+        $this->requestValidated['password'] = Hash::make($this->passwordSend);
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
     }
 }

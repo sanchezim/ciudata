@@ -63,4 +63,29 @@ class User extends Authenticatable implements MustVerifyEmail
         $url = config('apiConfig.SPA_URL') . '/reset/password?token=' . $token;
         $this->notify(new ResetPasswordNotification($url));
     }
+
+    public static function saveUser(array $data): self
+    {
+        return self::create(helper_to_array_camel($data));
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->second_name} {$this->first_last_name} {$this->second_last_name}";
+    }
+
+    public function scopeWhereProfile($query, ?int $idProfile = null)
+    {
+        if (!is_null($idProfile)) return $query->where('id_profile', $idProfile);
+    }
+
+    public function scopeWhereFullName($query, ?string $fullName = null)
+    {
+        if (!is_null($fullName)) return $query->where(function ($query) use ($fullName) {
+            $query->orWhereRaw('LOWER(first_name) like LOWER(?)', ["%{$fullName}%"])
+            ->orWhereRaw('LOWER(second_name) like LOWER(?)', ["%{$fullName}%"])
+            ->orWhereRaw('LOWER(first_last_name) like LOWER(?)', ["%{$fullName}%"])
+            ->orWhereRaw('LOWER(CONCAT(first_name, \' \', second_name, \' \', first_last_name)) LIKE LOWER(?)', ["%{$fullName}%"]);
+        });
+    }
 }

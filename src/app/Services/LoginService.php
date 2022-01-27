@@ -106,7 +106,6 @@ class LoginService
     {
         $auth = $this->userService->auth();
         if ($auth->check()) {
-            // optional($auth)->logout();
             optional($auth->user())->currentAccessToken()->delete();
         }
         return $this;

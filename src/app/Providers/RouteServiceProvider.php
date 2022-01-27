@@ -107,7 +107,7 @@ class RouteServiceProvider extends ServiceProvider
     protected  function mapUserAdministratorRoute(): void
     {
         Route::prefix('api/users/administrator')
-            ->middleware(['api', 'auth:sanctum'])
+            ->middleware(['api', 'auth:sanctum', 'verified'])
             ->namespace($this->namespace)
             ->group(base_path('routes/user/administrator/route.php'));
     }

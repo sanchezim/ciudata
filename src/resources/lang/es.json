@@ -720,6 +720,8 @@
     "The password is incorrect, on the :tried invalid attempt your user is blocked: attempt :userAttempt of :tried": "La contraseña es incorrecta, al :tried intento invalido se bloquea tu usuario: intento :userAttempt de :tried ",
     "Disabled user": "Usuario inhabilitado",
     "User does not have the right roles.": "El usuario no tiene los roles correctos.",
-    "Unauthenticated": "No autenticado"
+    "Unauthenticated": "No autenticado",
+    "Your email address is not verified." :"Su dirección de correo electrónico no está verificada.",
+    "User does not have the right roles or permission": "El usuario no tiene los roles o permisos correctos"
 
 }

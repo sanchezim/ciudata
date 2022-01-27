@@ -24,7 +24,7 @@ class UserAdminitratorRequest extends FormRequest
     public function rules()
     {
         return [
-            "idProfile"         => 'required|exists|profiles,id',
+            "idProfile"         => 'required|exists:profiles,id',
             "firstName"         => 'required|string|max:255',
             "secondName"        => 'string|max:255',
             "firstLastName"     => 'required|string|max:255',

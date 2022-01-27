@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\v1\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\UserController;
+use App\Http\Controllers\Api\v1\Verify\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,11 @@ use App\Http\Controllers\Api\v1\UserController;
 Route::get('user', [UserController::class, 'show'])
     ->middleware(['auth:sanctum'])
     ->name('user.show');
+
+Route::get('user/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+    ->middleware(['auth:sanctum'])
+    ->name('verification.verify');
+
 
 Route::get('token/validate', [AuthController::class, 'tokenValidate'])
     ->middleware(['auth:sanctum'])
