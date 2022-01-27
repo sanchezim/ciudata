@@ -5,4 +5,5 @@ return [
     'SPA_URL'             => env('SPA_URL', 'localhost'),
     'ROLES'               => ['master', 'senior', 'junior'],
     'PERMISSIONS'         => ['alta', 'consulta', 'actualiza', 'elimina'],
+    'LANGS'               => ['es', 'en'],
 ];

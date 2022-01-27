@@ -17,7 +17,7 @@ class RoleService implements ServiceInterface
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->message = __('Request accepted');
+        $this->message = 'Request accepted';
     }
 
     public function validate(array $rules): self
@@ -58,7 +58,7 @@ class RoleService implements ServiceInterface
     {
         return $this->serviceResponse([
             'code'      => $this->code,
-            'message'   => $this->message,
+            'message'   => __($this->message),
         ]);
     }
 
@@ -66,7 +66,7 @@ class RoleService implements ServiceInterface
     {
         return $this->serviceResponse([
             'code'      => $this->code,
-            'message'   => $this->message,
+            'message'   => __($this->message),
         ]);
     }
 }

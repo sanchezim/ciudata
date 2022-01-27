@@ -95,7 +95,7 @@ class PasswordService implements ServiceInterface
     {
         return $this->serviceResponse([
             'code'    => $this->code,
-            'message' => $this->message,
+            'message' => __($this->message),
         ]);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\App;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Validation\ValidationException;
 

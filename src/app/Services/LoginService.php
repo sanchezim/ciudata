@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Traits\ServiceTrait;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\ApiResponseTrait;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Validation\ValidationException;
 
 class LoginService
@@ -26,7 +28,7 @@ class LoginService
     {
         $this->request      = $request;
         $this->userService  = $userService;
-        $this->message = __('Request accepted');
+        $this->message      = 'Request accepted';
     }
 
     public function setUser(): self
@@ -88,8 +90,9 @@ class LoginService
 
         return $this->serviceResponse([
             'code'        => $this->code,
-            'message'     => $this->message,
+            'message'     => __($this->message),
             'accessToken' => $this->token,
+            'data'        => new UserResource($this->userService->auth()->user())
         ]);
     }
 
@@ -97,7 +100,7 @@ class LoginService
     {
         return $this->serviceResponse([
             'code'          => $this->code,
-            'message'       => $this->message,
+            'message'       => __($this->message),
             'tokenValidate' => true,
         ]);
     }
@@ -115,7 +118,7 @@ class LoginService
     {
         return $this->serviceResponse([
             'code'      => $this->code,
-            'message'   => $this->message
+            'message'   => __($this->message)
         ]);
     }
 }

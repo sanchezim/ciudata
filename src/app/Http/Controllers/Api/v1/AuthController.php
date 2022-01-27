@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 use App\Services\LoginService;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,6 +53,7 @@ class AuthController extends Controller
          *      @OA\Response(response=404, description="Resource Not Found"),
          * )
          */
+        
         return $this->loginService
             ->setUser()
             ->checkHash()

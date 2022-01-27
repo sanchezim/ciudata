@@ -43,15 +43,16 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-
+            $this->mapConfigApiRoute();
             $this->mapLoginRoute();
             $this->mapRoleRoute();
             $this->mapPermissionRoute();
             $this->mapUserRoleAndPermissionRoute();
             $this->mapUserAdministratorRoute();
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
         });
     }
 
@@ -70,7 +71,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapLoginRoute(): void
     {
         Route::prefix('api')
-            ->middleware('api')
+            ->middleware(['api'])
             ->namespace($this->namespace)
             ->group(base_path('routes/login/route.php'));
     }
@@ -94,7 +95,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapUserRoleAndPermissionRoute(): void
     {
         Route::prefix('api')
-            ->middleware(['api', 'auth:sanctum'])
+            ->middleware(['api', 'auth:sanctum', 'verified'])
             ->namespace($this->namespace)
             ->group(base_path('routes/user/role/route.php'));
 
@@ -110,5 +111,12 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(['api', 'auth:sanctum', 'verified'])
             ->namespace($this->namespace)
             ->group(base_path('routes/user/administrator/route.php'));
+    }
+
+    protected function mapConfigApiRoute()
+    {
+        Route::prefix('api')
+        ->namespace($this->namespace)
+        ->group(base_path('routes/config/route.php'));
     }
 }
